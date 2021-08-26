@@ -1,0 +1,33 @@
+{% extends 'auth.html' %}
+
+{% block page_header %}
+    SIGNUP
+{% endblock page_header %}
+
+{% block stage %}
+    {% for msg in get_flashed_messages() %}
+        <p style="color: red">{{msg}}</p>
+    {% endfor %}
+    <form id="main-form" action="javascript:signup()" class="form-group main-form">
+
+        <input class="input form-control" name="name" id="signup-name" type="name" placeholder="Name" required/>
+
+        <input class="input form-control" name="email" id="signup-email" type="email" placeholder="Email" required/>
+
+        <input class="input form-control" name="pwd" id="signup-pass" type="password" placeholder="password" required/>
+
+        <input class="btn btn-primary form-control asyncTrigger" type="submit" value="Signup">
+
+        <a href="{{url_for('login_view')}}">Already have an account</a>
+        <a href="#" style="float: right;">Forgot password</a>
+
+    </form>
+
+{% endblock stage %}
+
+{% block additional_scripts %}
+    <script>
+
+
+    </script>
+{% endblock additional_scripts %}

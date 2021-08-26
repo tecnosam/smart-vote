@@ -13,6 +13,8 @@ app = Flask( __name__ )
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv( "DB_URI" )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+app.secret_key = os.getenv( "FLASK_SECRET_KEy" )
+
 db = SQLAlchemy( app )
 
 from .models.user_models import *
@@ -33,18 +35,28 @@ from .resources.poll_resources import PollResource
 from .resources.user_resources import UserResource
 from .resources.vote_resources import VoteResource
 
-api.add_resource( UserResource, "/auth", "/auth/<int:uid>" )
+api.add_resource( UserResource, "/users", "/users/<int:uid>" )
 
-api.add_resource( MeetingResource, "/user/<int:uid>/meetings", "/meetings/<int:meeting_id>" )
+api.add_resource( MeetingResource, "/users/<int:uid>/meetings", "/meetings/<int:meeting_id>" )
 
-api.add_resource( MemberResource, "/meetings/<int:meeting_id>/members", "/meeting/members/<int:mid>" )
+api.add_resource( MemberResource, "/meetings/<int:meeting_id>/members", "/meetings/members/<int:mid>" )
 
-api.add_resource( PollResource, "/meetings/<int:meeting_id>/polls", "/meeting/polls/<int:pid>" )
+api.add_resource( PollResource, "/meetings/<int:meeting_id>/polls", "/meetings/polls/<int:pid>" )
 
-api.add_resource( OptionResource, "/polls/<int:pid>/options", "/poll/options/<int:oid>" )
+api.add_resource( OptionResource, "/polls/<int:pid>/options", "/polls/options/<int:oid>" )
 
-api.add_resource( VoteResource, "/meeting/members/<int:mid>/vote/<int:oid>" )
+api.add_resource( VoteResource, "/meetings/members/<int:mid>/vote/<int:oid>" )
 
 api.init_app( app )
 
-# TODO: Start work on the frontend
+from .views.views import *
+from .views.auth import *
+from .views.meetings import *
+
+# TODO: edit poll, add new option, delete option, delete meeting form
+# TODO: work on vote page
+# TODO: work on result page
+
+# TODO: try to make import member not refresh the page ( move logic from PY to JS )
+
+# TODO: socket io interactions for realtime voting results

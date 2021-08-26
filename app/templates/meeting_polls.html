@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% import "polls.html" as poll_funcs %}
+
+{%block title%}Polls{%endblock%}
+{%block page_title%}Polls for {{meeting.tag}}{%endblock%}
+
+{% block content %}
+
+<section class="py-5">
+
+    <div class="row">
+        <div class="col-lg-4 mb-0">                           
+            <div class="card">
+            <div class="card-header">
+                <h3 class="h6 text-uppercase mb-0">Add Poll</h3>
+            </div>
+            <div class="card-body">
+                <small class="text-uppercase mb-0">A poll is a decision to be made that requres</small>
+
+                <br>
+
+                <form action="javascript:add_poll()" method="POST" style="margin-top: 2%; margin-bottom: 2%;" class="form-inline">
+
+                    <div class="form-group">
+                        <label class="sr-only">Poll Tag</label>
+                        <input name="tag" id="add-poll-tag" type="text" placeholder="E.g Chairmanship election" class="mr-3 form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group" style="margin-top: 2%; margin-bottom: 2%">
+                        <label class="sr-only">Poll Tag</label>
+                        <input name="desc" id="add-poll-desc" type="text" placeholder="Describe the poll" class="mr-3 form-control" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary mr-3 form-control">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<section class="py-5">
+    <div class="row" id="polls">
+
+        {% for poll in meeting.polls[::-1] %}
+            {{ poll_funcs.render_poll( poll ) }}
+        {% endfor %}
+
+    </div>
+</section>
+
+<script>
+
+    const meeting_id = Number(`{{meeting.id}}`);
+
+</script>
+
+{% endblock content %}

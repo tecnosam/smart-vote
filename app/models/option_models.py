@@ -38,7 +38,7 @@ class Option( db.Model ):
         return _option
     
     @staticmethod
-    def pop( oid ):
+    def pop_obj( oid ):
         _option = Option.query.get( oid )
 
         if _option is not None:

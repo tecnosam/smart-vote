@@ -21,7 +21,10 @@ class UserResource( Resource ):
         # Create a new user
         pl = self.c_fields.parse_args( strict = True )
 
-        _user =  User.add( **pl )
+        try:
+            _user =  User.add( **pl )
+        except Exception as e:
+            abort( str(e), 400 )
 
         if _user is None:
             print( "foo", _user )

@@ -45,6 +45,6 @@ class PollResource( Resource ):
         if pid == 0:
             abort( 404 )
         try:
-            return Poll.pop( pid )
+            return Poll.pop_obj( pid )
         except Exception as e:
             abort( Response( str(e), 400 ) )

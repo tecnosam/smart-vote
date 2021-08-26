@@ -46,6 +46,6 @@ class MemberResource( Resource ):
             abort( 404 )
 
         try:
-            return Member.pop( mid )
+            return Member.pop_obj( mid )
         except Exception as e:
             abort( Response( str(e), 400 ) )

@@ -16,12 +16,11 @@ class Member( db.Model ):
 
     @staticmethod
     def add( meeting_id, name, email ):
-        # TODO: hash or encrypt the pwd when inserting into the database
         _member = Member(
             meeting_id = meeting_id, 
             email = email,
             name = name,
-            pwd = Fernet.generate_key().decode()
+            pwd = Fernet.generate_key().decode()[:8]
         )
 
         db.session.add( _member )
@@ -39,15 +38,17 @@ class Member( db.Model ):
         ).first()
 
     @staticmethod
-    def pop( mid ):
+    def pop_obj( mid ):
         _member = Member.query.get( mid )
 
         if _member is not None:
-            _member.pop()
+            _member.pop(  )
 
         return _member
 
     def pop(self):
+
+        print( self )
 
         for vote in self.votes:
             vote.pop()

@@ -1,0 +1,22 @@
+.input {
+    margin-bottom: 5%;
+}
+
+.concentrate {
+    margin-top: 10%;
+    /* border: 1px solid; */
+    /* width: 50%; */
+    display: grid;
+    place-items: center;
+}
+
+.error {
+    color: red;
+    display: none;
+}
+.main-form {
+    min-width: 200px;
+}
+.main-text {
+    text-align: center;
+}

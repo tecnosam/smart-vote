@@ -37,7 +37,7 @@ class Poll( db.Model ):
         return _poll
     
     @staticmethod
-    def pop( pid ):
+    def pop_obj( pid ):
         _poll = Poll.query.get( pid )
 
         if _poll is not None:

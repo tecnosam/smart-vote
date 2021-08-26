@@ -58,6 +58,6 @@ class MeetingResource( Resource ):
             abort( 404 )
 
         try:
-            return Meeting.pop( meeting_id )
+            return Meeting.pop_obj( meeting_id )
         except Exception as e:
             abort( Response( str(e), 400 ) )

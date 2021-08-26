@@ -48,6 +48,6 @@ class OptionResource( Resource ):
             abort(404)
 
         try:
-            return Option.pop( oid )
+            return Option.pop_obj( oid )
         except Exception as e:
             abort( Response( str(e), 400 ) )

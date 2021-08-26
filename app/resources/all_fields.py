@@ -1,7 +1,5 @@
 from flask_restful import fields
 
-# TODO: Add all resources to api
-
 
 VoteFields = {
     "id": fields.Integer,
@@ -48,6 +46,6 @@ UserFields = {
     "name": fields.String,
     "email": fields.String,
     "pwd": fields.String,
-    "meetings": fields.Nested( MeetingFields ),
+    # "meetings": fields.Nested( MeetingFields ),
     "date_created": fields.DateTime,
 }

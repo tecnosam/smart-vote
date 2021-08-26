@@ -23,32 +23,33 @@ class User( db.Model ):
 
         _user = User.query.filter_by( email = email ).first()
 
-        if _user is None:
+        if _user is not None:
+            raise Exception( "User with email {} exists!!!!".format( email ) )
 
-            _user = User(
-                name = name, email = email, pwd = h_pwd
-            )
+        _user = User(
+            name = name, email = email, pwd = h_pwd
+        )
 
-            try:
+        try:
 
-                db.session.add( _user )
-                db.session.commit()
+            db.session.add( _user )
+            db.session.commit()
 
-            except sqlalchemy.exc.IntegrityError:
+        except sqlalchemy.exc.IntegrityError:
 
-                db.session.rollback()
-                raise Exception( "User with email {} exists!!!!".format( email ) )
-            
-            except Exception as e:
-                db.session.rollback()
-                raise e
-
-        elif ( _user.pwd != h_pwd ):
-
-            return None
+            db.session.rollback()
+            raise Exception( "User with email {} exists!!!!".format( email ) )
+        
+        except Exception as e:
+            db.session.rollback()
+            raise e
 
         return _user
     
+    @staticmethod
+    def auth( email, pwd ):
+        return User.query.filter_by( email = email, pwd = pwd ).first()
+
     @staticmethod
     def edit( uid:int, name:str = None, email:str = None, pwd:str = None ):
         _user = User.query.get( uid )

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{%block title%}{%endblock%}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{{url_for('static', filename = 'vendor/bootstrap/css/bootstrap.min.css')}}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- Google fonts - Popppins for copy-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
+    <!-- orion icons-->
+    <link rel="stylesheet" href = "{{url_for('static', filename = 'css/orionicons.css')}}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/style.default.css')}}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/custom.css')}}">
+    <!-- Favicon-->
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+    <style>
+      .btn-primary {
+        background-color: rgb(90, 90, 255);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- navbar-->
+    <div class="d-flex align-items-stretch">
+      <div class = "page-holder w-100 d-flex flex-wrap">
+          <div class="container-fluid px-xl-10">
+
+            {%block nav_bar%}
+            <nav id="navbar_top" class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto" style="text-align: center;">
+                            <!-- Brings out dialogs/modals -->
+                            {% block more_options %}
+                            {% endblock more_options %}
+                            <li class="nav-item active">
+                                <a class="nav-link" data-toggle="modal" href="#create_meeting_modal">New Meeting</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" data-toggle="modal" href="#edit_profile_modal">Edit profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{url_for( 'logout_view' )}}">logout</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </nav>
+            {%endblock%}
+
+
+            <h2 style="text-align: center;" class="h3 text-uppercase mb-0">
+              {% block page_title %}smart vote meeting forms{% endblock page_title %}
+            </h2>
+
+            {%block content%}
+            <div class="py-5" style="margin: 2%; ">
+
+      
+                {% for meeting in meetings %}
+                  
+                  <!-- meeting form -->
+                    <div class="card mb-8 " style="margin-bottom: 2%;">
+                      <div class="card-header">
+                        <h2 class="h6 mb-0 text-uppercase">
+                          <span class="meeting-{{meeting.id}}-tag">
+                            {{meeting.tag}} 
+                          </span>
+                          <span>
+                            <small>
+                              <a href="javascript:change_meeting_tag(`{{meeting.id}}`, `{{meeting.tag}}`)">
+                                edit
+                              </a>
+                            </small>
+                          </span>
+                        </h2>
+                      </div>
+                      <div class="card-body">
+
+                        <!-- N polls -->
+                        <a href="{{url_for('meeting_polls_view', meeting_id = meeting.id)}}" class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
+                          <div class="left d-flex align-items-center">
+                          <div class="text">
+                              <h5 class="mb-0 d-flex align-items-center"> 
+                                  <span>View Polls</span>
+                              </h5>
+                              <small class="text-gray">click to manage polls</small>
+                          </div>
+                          </div>
+                        </a>
+                        <!-- end of N polls -->
+
+                        <!-- N members -->
+                        <a data-toggle="modal" href="#meeting-{{meeting.id}}-modal" class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
+                          <div class="left d-flex align-items-center">
+                          <div class="text">
+                              <h5 class="mb-0 d-flex align-items-center">
+                                  <span>View Members</span>
+                              </h5>
+                              <small class="text-gray">click to edit member</small>
+                          </div>
+                          </div>
+                        </a>
+                        <!-- end of N members -->
+
+                      </div>
+                    </div>
+
+                    <!-- Edit meeting Modal -->
+                      <div class="modal fade" id="meeting-{{meeting.id}}-modal" tabindex="-1" role="dialog" aria-labelledby="{{meeting.id}}-lab" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+
+                                  <h5 class="modal-title meeting-{{meeting.id}}-tag" id="meeting-{{meeting.id}}-lab">{{meeting.tag}}</h5>
+
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="form-group" action="javascript:void()">
+                                        <!-- <input type="text" id="edit-meeting-{{meeting.id}}-tag" value="{{meeting.tag}}" class="form-control meeting-{{meeting.id}}-tag" required placeholder="Give the form a name" style="margin-bottom: 3%;"> -->
+
+                                        <div style="text-align: center; margin-top: 0%; margin-bottom: 5%">
+
+                                          <h5 class="mb-0 bold text-uppercase text-center"> Members </h5>
+
+                                          <form method="POST" enctype="multipart/form-data" action="{{url_for('import_members', meeting_id = meeting.id)}}">
+
+                                            <small class="form-label mb-0 text-uppercase" for="import-members-{{meeting.id}}">Import JSON of members</small>
+                                            <br>
+                                            <small class="form-label mb-0 text-uppercase" for="import-members-{{meeting.id}}">JSON (key value pairs of name and email)</small>
+
+                                            <input id="import-members-{{meeting.id}}" name="members" type="file" class="form-control" style="margin-bottom: 3%;" >
+
+                                            <button type="submit" class="mb-0 text-uppercase text-center btn btn-primary form-control asyncTrigger">Import Members </button>
+                                            
+                                          </form>
+
+                                        </div>
+
+                                        <div style="text-align: center">
+                                            <label class="form-label mb-0 text-uppercase" for="members-{{meeting.id}}">double click to delete</label>
+                                            <select id="members-{{meeting.id}}" multiple size = "5" class="form-control">
+                                              {% for member in meeting.members %}
+                                                <option id="member-{{member.id}}" ondblclick="delete_member(`{{member.id}}`)">{{member.name}}</option>
+                                              {% endfor %}
+                                          </select>
+                                        </div>
+
+                                        <!-- <button type="submit" class="form-control btn btn-primary asyncTrigger"> Save Changes</button> -->
+                                        <div onclick="" type="button" class="form-control btn btn-danger asyncTrigger" style="margin-top: 2%"> Delete Meeting form</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    <!-- end of modal -->
+
+                  <!-- end of meeting form -->
+                {% endfor %}
+
+            </div>
+              {%endblock%}
+      </div>
+    </div>
+
+    <!-- Create Meeting Modal -->
+      <div class="modal fade" id="create_meeting_modal" tabindex="-1" role="dialog" aria-labelledby="cml" aria-hidden="true">
+
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cml">Create Meeting Form</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form class="form-group" id="cmf" action="javascript:add_meeting()">
+
+                        <input type="text" id="cm-tag" required placeholder="Give the form a name" class="form-control">
+                        <br>
+
+                        <button type="submit" class="form-control btn btn-primary asyncTrigger"> Create meeting form</button>
+
+                    </form>
+
+                </div>
+
+                <!-- <div class="modal-footer">
+                    <a class="btn btn-secondary" data-dismiss="modal">Close</a>
+                    <a href="javascript:new_pool()" class="btn btn-primary">Save changes</a>
+                </div> -->
+
+            </div>
+
+        </div>
+
+      </div>
+    <!-- end of modal -->
+
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="edit_profile_modal" tabindex="-1" role="dialog" aria-labelledby="epl" aria-hidden="true">
+
+      <div class="modal-dialog" role="document">
+
+          <div class="modal-content">
+
+              <div class="modal-header">
+                  <h5 class="modal-title" id="epl">Edit profile</h5>
+
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+
+              <div class="modal-body">
+
+                  <form class="form-group" id="epf" action="javascript:edit_prof()">
+
+                      {% for field in session.data %}
+                        {% if field not in session.immutable %}
+                          <input type="text" name="{{field}}" id="ep-{{field}}" required placeholder="Edit your {{field}}" value="{{ session.data[field] }}" class="form-control">
+                          <br>
+                        {% endif %}
+                      {% endfor %}
+                      <br>
+
+                      <button type="submit" class="form-control btn btn-primary asyncTrigger"> Save changes</button>
+
+                  </form>
+
+              </div>
+
+          </div>
+
+      </div>
+
+    </div>
+  <!-- end of modal -->
+
+    <!-- JavaScript files-->
+    <script>
+      const uid = Number( `{{ session.data.id | safe }}` );
+    </script>
+    <script src="{{url_for('static', filename = 'vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'vendor/popper.js/umd/popper.min.js')}}"> </script>
+    <script src="{{url_for('static', filename = 'vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/front.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+    <script src="{{url_for('static', filename = 'socket.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/casters.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/utils.js')}}"></script>
+    {%block more_scripts%}
+    {%endblock%}
+  </body>
+</html>

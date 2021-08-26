@@ -36,7 +36,7 @@ class Meeting( db.Model ):
         return _meeting
     
     @staticmethod
-    def pop( meeting_id ):
+    def pop_obj( meeting_id ):
         _meeting = Meeting.query.get( meeting_id )
 
         if _meeting is not None:
