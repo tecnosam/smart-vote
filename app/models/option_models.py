@@ -2,6 +2,8 @@ from .. import db
 
 from datetime import datetime
 
+from .vote_models import Vote
+
 class Option( db.Model ):
 
     id = db.Column( db.Integer, primary_key = True, autoincrement = True )
@@ -57,3 +59,7 @@ class Option( db.Model ):
         db.session.commit()
 
         return self
+
+    def n_votes(self):
+
+        return len(self.votes)

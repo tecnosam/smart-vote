@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Results page
+{% endblock title %}
+
+{% block page_title %}
+    {{meeting.tag}}
+{% endblock page_title %}
+
+{% block nav_bar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light"></nav>
+{% endblock nav_bar %}
+
+{% block content %}
+    <section class="py-5">
+    <h1 class="text-uppercase text-gray text-center mb-0">{{meeting.tag}} results</h1>
+    <div class = "row">
+        {% for poll in meeting.polls %}
+
+            <div class="col-lg-5" style="margin: 2%;">
+                <div class="card mb-5 mb-lg-0">         
+                <div class="card-header">
+                    <h2 class="h6 mb-0 text-uppercase">{{poll.tag}}</h2>
+                </div>
+                <div class="card-body">
+                    {%for option in poll.options%}
+                    <div class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
+                        <div class="left d-flex align-items-center">
+                        <div class="text">
+                            <h6 class="mb-0 d-flex align-items-center"> 
+                                <span>{{option.tag}}</span>
+                            </h6>
+                            <small class="text-gray">{{option.desc}}</small>
+                        </div>
+                        </div>
+                        <div class="right ml-5 ml-sm-0 pl-3 pl-sm-0 text-violet">
+                            <h5 id="option-{{option.id}}-votes">{{option.n_votes()}}</h5>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock content %}
+
+{% block modals %}
+    
+{% endblock modals %}

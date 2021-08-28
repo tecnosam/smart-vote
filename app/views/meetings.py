@@ -1,9 +1,10 @@
+from app.models.option_models import Option
 from app.models.vote_models import Vote
 from app.models.meeting_models import Meeting
 from ..models.member_models import Member
 from .. import app
 
-from flask import redirect, request, url_for, render_template, session, abort
+from flask import redirect, request, url_for, render_template, session, abort, Response, flash
 
 from werkzeug.utils import secure_filename
 
@@ -51,7 +52,7 @@ def vote_view( meeting_id:int ):
         session.pop( "member" )
 
         return redirect( url_for("vote_view", meeting_id = meeting_id) )
-    
+
     val_submitted = Vote.query.filter_by( mid = session['member']['id'] ).first()
 
     if val_submitted is not None:
@@ -64,7 +65,29 @@ def vote_view( meeting_id:int ):
         meeting_id = meeting_id
     )
 
-@app.route("/result/<meeting_id>")
+@app.route("/result/<int:meeting_id>")
 def vote_results_view( meeting_id ):
-    return "WIP"
-    return render_template("")
+    meeting = Meeting.query.get( meeting_id )
+
+    if meeting is None:
+        abort( 404 )
+    
+    if ( session.get("member") is None ):
+        return render_template(
+            "member_login.html", 
+            meeting = meeting,
+            meeting_id = meeting_id
+        )
+
+    elif ( session['member']['meeting_id'] != meeting_id ):
+
+        flash("SOmething fishy going on")
+
+        return redirect( url_for("vote_view", meeting_id = meeting_id) )
+
+
+    return render_template(
+        "meeting_results.html", 
+        meeting = meeting, 
+        meeting_id = meeting_id
+        )

@@ -38,7 +38,7 @@ class MemberResource( Resource ):
             abort( Response( "Member not found", 404 ) )
 
         session['member'] = marshal( _member, MemberFields )
-        print( session['member'] )
+        # print( session['member'] )
 
         return _member
 

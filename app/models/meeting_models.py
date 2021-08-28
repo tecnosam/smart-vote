@@ -11,6 +11,8 @@ class Meeting( db.Model ):
 
     tag = db.Column( db.String(200), nullable = False, unique = False )
 
+    activated = db.Column( db.Boolean, nullable = False, default = False, unique = False )
+
     date_created = db.Column( db.DateTime, default = datetime.utcnow() )
 
     members = db.relationship( 'Member', backref = 'meeting', lazy = True )
@@ -24,7 +26,7 @@ class Meeting( db.Model ):
         db.session.commit()
 
         return _meeting
-    
+
     @staticmethod
     def edit_tag( meeting_id, tag ):
         _meeting = Meeting.query.get( meeting_id )

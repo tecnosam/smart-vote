@@ -10,25 +10,14 @@ socket.on( 'disconnect', function() {
     console.log( "Disconnected..." );
 } );
 
-socket.on("add-vote", function( data ) {
+socket.on("add-vote", function( vote ) {
     // console.log("duck")
-    if ( data.id != 0 ) {
-        console.log(data);
-        $(`#aspirant-${data.id}-votes`).html( data.votes );
+    if ( vote.id != 0 ) {
+        console.log(vote);
+        let n_votes = $(`#option-${vote.oid}-votes`);
+
+        n_votes.html( Number( n_votes.html() )++ );
+
     }   
 })
 
-
-// delete aspirant
-function slotter_gang(id) {
-    $.ajax({
-        url: `aspirants?id=${id}`,
-        type: 'DELETE',
-        success: function(data) {
-            // alert("dede", data)
-            // console.log( `aspirant-${id}` )
-            $( `#aspirant-${id}` ).remove();
-        }
-    })
-    // change to ajax call
-}

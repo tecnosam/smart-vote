@@ -7,6 +7,8 @@ from ..models.vote_models import Vote
 from ..models.member_models import Member
 from ..models.option_models import Option
 
+from .. import socket
+
 class VoteResource( Resource ):
 
     c_fields = reqparse.RequestParser()
@@ -18,7 +20,7 @@ class VoteResource( Resource ):
         # Create a new vote
         # pl = self.c_fields.parse_args( strict = True )
 
-        # TODO: validate the members username and password in header
+        # TODO: validate the members in session matches mid
         _vote = Vote.query.filter_by( mid = mid, oid = oid ).first()
 
         if _vote is not None:
@@ -31,6 +33,8 @@ class VoteResource( Resource ):
             abort( Response("Option does not exist", 404) )
 
         try:
-            return Vote.add( mid, oid )
+            _vote = Vote.add( mid, oid )
+            # TODO: emit 'add-vote' event with vote data (vote in VoteResource.post) to room
+            return _vote
         except Exception as e:
             abort( Response( str(e), 400 ) )
