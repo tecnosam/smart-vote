@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO
 
 import os
 
@@ -25,6 +26,10 @@ from .models.poll_models import *
 from .models.vote_models import *
 
 db.create_all()
+
+socket = SocketIO( app )
+
+from .socket_inter import *
 
 api = Api( app )
 
@@ -53,8 +58,6 @@ from .views.views import *
 from .views.auth import *
 from .views.meetings import *
 
-# TODO: work on result page
+# TODO> activate, deactivate form feature
 
 # TODO: socket io interactions for realtime voting results
-
-# TODO: try to make import member not refresh the page ( move logic from PY to JS )
