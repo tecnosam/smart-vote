@@ -1,5 +1,5 @@
-from flask_restful import Resource, reqparse, marshal_with
-from flask import abort, Response, request
+from flask_restful import Resource, marshal, reqparse, marshal_with
+from flask import abort, Response, request, session
 
 from ..resources.all_fields import MemberFields
 from ..models.member_models import Member
@@ -27,15 +27,18 @@ class MemberResource( Resource ):
     @marshal_with( MemberFields )
     def put( self, mid = 0, meeting_id = None ):
         # Authenticates member
-        if mid == 0:
+        if meeting_id == 0:
             abort( 404 )
 
         pl = self.e_fields.parse_args( strict=True )
 
-        _member = Member.authenticate( mid = mid, **pl )
+        _member = Member.authenticate( meeting_id = meeting_id, **pl )
 
         if _member is None:
             abort( Response( "Member not found", 404 ) )
+
+        session['member'] = marshal( _member, MemberFields )
+        print( session['member'] )
 
         return _member
 

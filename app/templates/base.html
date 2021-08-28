@@ -28,6 +28,13 @@
       .btn-primary {
         background-color: rgb(90, 90, 255);
       }
+      /* .btn-danger:focus {
+        color: white
+      } */
+
+      .form-control .btn .btn-danger:hover {
+        color: red;
+      }
     </style>
   </head>
   <body>
@@ -74,109 +81,112 @@
 
       
                 {% for meeting in meetings %}
-                  
-                  <!-- meeting form -->
-                    <div class="card mb-8 " style="margin-bottom: 2%;">
-                      <div class="card-header">
-                        <h2 class="h6 mb-0 text-uppercase">
-                          <span class="meeting-{{meeting.id}}-tag">
-                            {{meeting.tag}} 
-                          </span>
-                          <span>
-                            <small>
-                              <a href="javascript:change_meeting_tag(`{{meeting.id}}`, `{{meeting.tag}}`)">
-                                edit
-                              </a>
-                            </small>
-                          </span>
-                        </h2>
-                      </div>
-                      <div class="card-body">
+                  <div id="meeting-{{meeting.id}}" class="card md-8">
+                    <!-- meeting form -->
+                      <div class="" style="margin-bottom: 2%;">
+                        <div class="card-header">
+                          <h2 class="h6 mb-0 text-uppercase">
+                            <span class="meeting-{{meeting.id}}-tag">
+                              {{meeting.tag}} 
+                            </span>
+                            <span>
+                              <small>
+                                <a href="javascript:change_meeting_tag(`{{meeting.id}}`, `{{meeting.tag}}`)">
+                                  edit
+                                </a>
+                              </small>
+                            </span>
+                          </h2>
+                        </div>
+                        <div class="card-body">
 
-                        <!-- N polls -->
-                        <a href="{{url_for('meeting_polls_view', meeting_id = meeting.id)}}" class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
-                          <div class="left d-flex align-items-center">
-                          <div class="text">
-                              <h5 class="mb-0 d-flex align-items-center"> 
-                                  <span>View Polls</span>
-                              </h5>
-                              <small class="text-gray">click to manage polls</small>
-                          </div>
-                          </div>
-                        </a>
-                        <!-- end of N polls -->
-
-                        <!-- N members -->
-                        <a data-toggle="modal" href="#meeting-{{meeting.id}}-modal" class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
-                          <div class="left d-flex align-items-center">
-                          <div class="text">
-                              <h5 class="mb-0 d-flex align-items-center">
-                                  <span>View Members</span>
-                              </h5>
-                              <small class="text-gray">click to edit member</small>
-                          </div>
-                          </div>
-                        </a>
-                        <!-- end of N members -->
-
-                      </div>
-                    </div>
-
-                    <!-- Edit meeting Modal -->
-                      <div class="modal fade" id="meeting-{{meeting.id}}-modal" tabindex="-1" role="dialog" aria-labelledby="{{meeting.id}}-lab" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-
-                                  <h5 class="modal-title meeting-{{meeting.id}}-tag" id="meeting-{{meeting.id}}-lab">{{meeting.tag}}</h5>
-
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-
-                                </div>
-
-                                <div class="modal-body">
-                                    <div class="form-group" action="javascript:void()">
-                                        <!-- <input type="text" id="edit-meeting-{{meeting.id}}-tag" value="{{meeting.tag}}" class="form-control meeting-{{meeting.id}}-tag" required placeholder="Give the form a name" style="margin-bottom: 3%;"> -->
-
-                                        <div style="text-align: center; margin-top: 0%; margin-bottom: 5%">
-
-                                          <h5 class="mb-0 bold text-uppercase text-center"> Members </h5>
-
-                                          <form method="POST" enctype="multipart/form-data" action="{{url_for('import_members', meeting_id = meeting.id)}}">
-
-                                            <small class="form-label mb-0 text-uppercase" for="import-members-{{meeting.id}}">Import JSON of members</small>
-                                            <br>
-                                            <small class="form-label mb-0 text-uppercase" for="import-members-{{meeting.id}}">JSON (key value pairs of name and email)</small>
-
-                                            <input id="import-members-{{meeting.id}}" name="members" type="file" class="form-control" style="margin-bottom: 3%;" >
-
-                                            <button type="submit" class="mb-0 text-uppercase text-center btn btn-primary form-control asyncTrigger">Import Members </button>
-                                            
-                                          </form>
-
-                                        </div>
-
-                                        <div style="text-align: center">
-                                            <label class="form-label mb-0 text-uppercase" for="members-{{meeting.id}}">double click to delete</label>
-                                            <select id="members-{{meeting.id}}" multiple size = "5" class="form-control">
-                                              {% for member in meeting.members %}
-                                                <option id="member-{{member.id}}" ondblclick="delete_member(`{{member.id}}`)">{{member.name}}</option>
-                                              {% endfor %}
-                                          </select>
-                                        </div>
-
-                                        <!-- <button type="submit" class="form-control btn btn-primary asyncTrigger"> Save Changes</button> -->
-                                        <div onclick="" type="button" class="form-control btn btn-danger asyncTrigger" style="margin-top: 2%"> Delete Meeting form</div>
-                                    </div>
-                                </div>
+                          <!-- N polls -->
+                          <a href="{{url_for('meeting_polls_view', meeting_id = meeting.id)}}" class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
+                            <div class="left d-flex align-items-center">
+                            <div class="text">
+                                <h5 class="mb-0 d-flex align-items-center"> 
+                                    <span>View Polls</span>
+                                </h5>
+                                <small class="text-gray">click to manage polls</small>
                             </div>
+                            </div>
+                          </a>
+                          <!-- end of N polls -->
+
+                          <!-- N members -->
+                          <a data-toggle="modal" href="#meeting-{{meeting.id}}-modal" class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
+                            <div class="left d-flex align-items-center">
+                            <div class="text">
+                                <h5 class="mb-0 d-flex align-items-center">
+                                    <span>View Members</span>
+                                </h5>
+                                <small class="text-gray">click to edit member</small>
+                            </div>
+                            </div>
+                          </a>
+                          <!-- end of N members -->
+
                         </div>
                       </div>
-                    <!-- end of modal -->
 
-                  <!-- end of meeting form -->
+                      <!-- Edit meeting Modal -->
+                        <div class="modal fade" id="meeting-{{meeting.id}}-modal" tabindex="-1" role="dialog" aria-labelledby="{{meeting.id}}-lab" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+
+                                    <h5 class="modal-title meeting-{{meeting.id}}-tag" id="meeting-{{meeting.id}}-lab">{{meeting.tag}}</h5>
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+
+                                  </div>
+
+                                  <div class="modal-body">
+                                      <div class="form-group" action="javascript:void()">
+                                          <!-- <input type="text" id="edit-meeting-{{meeting.id}}-tag" value="{{meeting.tag}}" class="form-control meeting-{{meeting.id}}-tag" required placeholder="Give the form a name" style="margin-bottom: 3%;"> -->
+
+                                          <div style="text-align: center; margin-top: 0%; margin-bottom: 5%">
+
+                                            <h5 class="mb-0 bold text-uppercase text-center"> Members </h5>
+
+                                            <form method="POST" enctype="multipart/form-data" action="{{url_for('import_members', meeting_id = meeting.id)}}">
+
+                                              <small class="form-label mb-0 text-uppercase" for="import-members-{{meeting.id}}">Import JSON of members</small>
+                                              <br>
+                                              <small class="form-label mb-0 text-uppercase" for="import-members-{{meeting.id}}">JSON (key value pairs of name and email)</small>
+
+                                              <input id="import-members-{{meeting.id}}" name="members" type="file" class="form-control" style="margin-bottom: 3%;" >
+
+                                              <button type="submit" class="mb-0 text-uppercase text-center btn btn-primary form-control asyncTrigger">Import Members </button>
+                                              
+                                            </form>
+
+                                          </div>
+
+                                          <div style="text-align: center">
+                                              <label class="form-label mb-0 text-uppercase" for="members-{{meeting.id}}">double click to delete</label>
+                                              <table>
+                                                <select id="members-{{meeting.id}}" size = "5" width="40" class="form-control">
+                                                  {% for member in meeting.members %}
+                                                    <option id="member-{{member.id}}" ondblclick="delete_member(`{{member.id}}`)">{{member.name}} {{member.email}}</option>
+                                                  {% endfor %}
+                                              </select>
+                                            </table>
+                                          </div>
+
+                                          <!-- <button type="submit" class="form-control btn btn-primary asyncTrigger"> Save Changes</button> -->
+                                          <div onclick="delete_meeting(`{{meeting.id}}`)" type="button" class="form-control btn btn-danger asyncTrigger" style="margin-top: 2%;"> Delete Meeting form</div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      <!-- end of modal -->
+
+                    <!-- end of meeting form -->
+                  </div>
                 {% endfor %}
 
             </div>
@@ -184,6 +194,8 @@
       </div>
     </div>
 
+    {% block modals %}
+      
     <!-- Create Meeting Modal -->
       <div class="modal fade" id="create_meeting_modal" tabindex="-1" role="dialog" aria-labelledby="cml" aria-hidden="true">
 
@@ -242,7 +254,7 @@
 
               <div class="modal-body">
 
-                  <form class="form-group" id="epf" action="javascript:edit_prof()">
+                  <form class="form-group" id="epf" action="javascript:edit_profile()">
 
                       {% for field in session.data %}
                         {% if field not in session.immutable %}
@@ -269,12 +281,13 @@
     <script>
       const uid = Number( `{{ session.data.id | safe }}` );
     </script>
+    {% endblock modals %}
     <script src="{{url_for('static', filename = 'vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{url_for('static', filename = 'vendor/popper.js/umd/popper.min.js')}}"> </script>
     <script src="{{url_for('static', filename = 'vendor/bootstrap/js/bootstrap.min.js')}}"></script>
     <script src="{{url_for('static', filename = 'js/front.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
-    <script src="{{url_for('static', filename = 'socket.js')}}"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+    <script src="{{url_for('static', filename = 'socket.js')}}"></script> -->
     <script src="{{url_for('static', filename = 'js/casters.js')}}"></script>
     <script src="{{url_for('static', filename = 'js/utils.js')}}"></script>
     {%block more_scripts%}

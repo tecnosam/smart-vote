@@ -29,10 +29,10 @@ class Member( db.Model ):
         return _member
     
     @staticmethod
-    def authenticate( mid, email, pwd ):
+    def authenticate( meeting_id, email, pwd ):
 
         return Member.query.filter_by(
-            id = mid,
+            meeting_id = meeting_id,
             email = email,
             pwd = pwd
         ).first()

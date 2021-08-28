@@ -53,10 +53,8 @@ from .views.views import *
 from .views.auth import *
 from .views.meetings import *
 
-# TODO: edit poll, add new option, delete option, delete meeting form
-# TODO: work on vote page
 # TODO: work on result page
 
-# TODO: try to make import member not refresh the page ( move logic from PY to JS )
-
 # TODO: socket io interactions for realtime voting results
+
+# TODO: try to make import member not refresh the page ( move logic from PY to JS )

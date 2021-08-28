@@ -1,0 +1,57 @@
+{% extends 'auth.html' %}
+
+{% block pre_header %}
+    
+{% endblock pre_header %}
+
+{% block page_header %}
+    {{meeting.tag}}
+{% endblock page_header %}
+
+{% block stage %}
+
+    <div id="flashed" style="color: red;">
+        {% for msg in get_flashed_messages() %}
+            <p>{{msg}}</p>
+        {% endfor %}
+    </div>
+
+    <form method="POST" action="javascript:auth_member()" id="main-form" class="form-group main-form">
+
+        <input class="input form-control" name="email" id="login-email" type="email" placeholder="Email" required/>
+
+        <input class="input form-control" name="pwd" id="login-pass" type="password" placeholder="password" required/>
+
+        <input class="btn btn-primary form-control" id="submit-btn" type="submit" value="Login">
+
+        <a href="#" style="float: right;">Forgot password</a>
+
+    </form>
+
+{% endblock stage %}
+
+{% block additional_scripts %}
+    <script>
+
+        async function auth_member(  ) {
+            let email = $("#login-email").val();
+            let pwd = $("#login-pass").val();
+
+            $("#submit-btn").val("Loading...");
+
+            await $.ajax({
+                url: `/meetings/{{meeting.id}}/members`,
+                type: 'PUT',
+                data: { email: email, pwd: pwd },
+                success: function ( member ) {
+                    window.location.href = "";
+                },
+                error: function ( err ) {
+                    $("#flashed").html( err.responseText );
+                    $("#submit-btn").val("Login");
+                }
+            });
+        }
+
+    </script>
+{% endblock additional_scripts %}

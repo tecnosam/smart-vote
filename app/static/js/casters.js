@@ -1,6 +1,6 @@
 const cast_poll = (poll) => `
 
-    <div class="col-lg-6 mb-4" id="poll-${poll.id}">
+    <div>
         <div class = "card">
         <div class="card-header">
             <h6 class="text-uppercase text-center mb-0">${poll.tag}</h6>
@@ -29,6 +29,7 @@ const cast_poll = (poll) => `
                     </tr>
                 </thead>
                 <tbody id="poll-${poll.id}-options">
+                    ${ poll.options.map( o => cast_option( o ) ).join("") }
                 </tbody>
             </table>
         </div>
@@ -40,7 +41,10 @@ const cast_poll = (poll) => `
         <div class="modal-content">
             <div class="modal-header">
 
-            <h4 class="modal-title">Edit ${poll.tag}</h4>
+            <h4  class="modal-title">
+                    Edit ${poll.tag}
+                    <a class="mb-0 f-10" style="font-size: 12pt; color: red;" href="javascript:delete_poll( "${poll.id}" )">DELETE</a>
+            </h4>
 
             <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
             </div>
@@ -58,7 +62,7 @@ const cast_poll = (poll) => `
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
-                    <input type="submit" class="btn btn-primary" value="Save changes">
+                    <input type="submit" class="btn btn-primary asyncTrigger" value="Save changes">
                 </div>
             </form>
         </div>
@@ -73,7 +77,7 @@ const cast_poll = (poll) => `
             <h4 class="modal-title">Add an option ${poll.tag}</h4>
             <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
             </div>
-            <form method="POST" action="" >
+            <form method="POST" action="javascript:add_option( ${poll.id} )" >
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Tag</label>
