@@ -59,4 +59,3 @@ from .views.views import *
 from .views.auth import *
 from .views.meetings import *
 
-# TODO> activate, deactivate form feature

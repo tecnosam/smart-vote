@@ -8,7 +8,7 @@ async function signup ( name = null, email = null, pwd = null ) {
     pwd = pwd===null ? $('#signup-pass').val() : pwd;
     // console.log( name, email, pwd )
 
-    let btnVal = $('#main-form .asyncTrigger').val();
+    const btnVal = $('#main-form .asyncTrigger').val();
 
     $('#main-form .asyncTrigger').val("Loading...");
 
@@ -30,10 +30,10 @@ async function signup ( name = null, email = null, pwd = null ) {
             console.log( err );
 
             alert( err.responseText );
+            $('#main-form .asyncTrigger').val( btnVal );
         }
 
     });
 
-    $('#main-form .asyncTrigger').val( btnVal );
 
 }

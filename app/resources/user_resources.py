@@ -24,7 +24,7 @@ class UserResource( Resource ):
         try:
             _user =  User.add( **pl )
         except Exception as e:
-            abort( str(e), 400 )
+            abort( Response(str(e), 400) )
 
         if _user is None:
             print( "foo", _user )

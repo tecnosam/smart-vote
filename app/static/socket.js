@@ -3,9 +3,11 @@
 var socket = io();
 
 socket.on('connect', function() {
-    if (meeting_id > 0) {
-        socket.emit( "join", { meeting_id: meeting_id } )
-    }
+    try {
+        if (meeting_id > 0) {
+            socket.emit( "join", { meeting_id: meeting_id } )
+        }
+    } catch ( e ) {}
     console.log( "Connected..." );
 } );
 

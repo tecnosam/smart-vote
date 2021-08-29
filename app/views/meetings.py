@@ -1,10 +1,14 @@
-from app.models.option_models import Option
-from app.models.vote_models import Vote
-from app.models.meeting_models import Meeting
+from ..models.vote_models import Vote
+from ..models.meeting_models import Meeting
 from ..models.member_models import Member
-from .. import app
+
+from ..resources.all_fields import MeetingFields
+from .. import app, db
 
 from flask import redirect, request, url_for, render_template, session, abort, Response, flash
+from flask import jsonify
+
+from flask_restful import marshal
 
 from werkzeug.utils import secure_filename
 
@@ -105,4 +109,19 @@ def member_logout_view():
             "vote_view", 
             meeting_id = _member['meeting_id']
         )
+    )
+
+@app.route("/meetings/<int:meeting_id>/active/toggle")
+def toggle_meeting_active( meeting_id:int ):
+    _meeting = Meeting.query.get( meeting_id )
+
+    if _meeting is None:
+        abort( Response( "Meeting does not exist", 404 ) )
+    
+    _meeting.activated = not _meeting.activated
+
+    db.session.commit()
+
+    return jsonify(
+        marshal(_meeting, MeetingFields)
     )

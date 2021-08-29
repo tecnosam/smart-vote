@@ -46,6 +46,11 @@
         {% endfor %}
         </div>
     </section>
+
+
+    <script>
+        const meeting_id = Number(`{{meeting_id | safe}}`);
+      </script>
 {% endblock content %}
 
 {% block modals %}

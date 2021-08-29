@@ -205,6 +205,28 @@ async function change_meeting_tag( meeting_id, old_tag ) {
     });
 }
 
+async function activate_meeting( meeting_id ) {
+    let btn = $(`#activate-meeting-${meeting_id}`)
+    let btnVal = btn.html();
+
+    btn.html( `<i style="color:black" class='fas fa-spinner fa-spin'></i>` );
+
+    await $.ajax({
+
+        url: `/meetings/${meeting_id}/active/toggle`,
+        success: function ( meeting ) {
+            btn.html( 
+                !meeting.activated ? "activate form filling" : "deactivate form filling"
+            );
+        },
+        error: function( err ) {
+            alert( err.responseText );
+            btn.html( btnVal );
+        }
+
+    });
+}
+
 async function delete_meeting( meeting_id ) {
     if ( !confirm("Are you sure you want to delete this meeting form") ) {
         return;

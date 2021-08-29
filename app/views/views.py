@@ -1,6 +1,6 @@
 from .. import app
 from ..models.meeting_models import Meeting
-from flask import render_template, redirect, url_for, session
+from flask import render_template, redirect, url_for, session,abort
 
 def val_active_session():
 
@@ -28,9 +28,15 @@ def meeting_polls_view( meeting_id:int ):
     if ( session.get( 'data' ) is None ):
         return redirect( url_for( "login_view" ) )
 
+    _meeting = Meeting.query.get( meeting_id )
+
+    if _meeting is None:
+        abort(404)
+
+
     return render_template( 
         "meeting_polls.html", 
-        meeting = Meeting.query.get( meeting_id )
+        meeting = _meeting
     )
 
 @app.route( "/logout" )

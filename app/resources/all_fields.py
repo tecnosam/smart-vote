@@ -36,6 +36,7 @@ MeetingFields = {
     "id": fields.Integer,
     "uid": fields.Integer,
     "tag": fields.String,
+    "activated": fields.Boolean,
     "polls": fields.Nested( PollFields ),
     "members": fields.Nested( MemberFields ),
     "date_created": fields.DateTime,

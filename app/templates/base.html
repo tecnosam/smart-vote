@@ -137,6 +137,19 @@
 
                                     <h5 class="modal-title meeting-{{meeting.id}}-tag" id="meeting-{{meeting.id}}-lab">{{meeting.tag}}</h5>
 
+                                    <span style="margin-left: 1%">
+                                      <b>
+                                        <a id="activate-meeting-{{meeting.id}}" href="javascript:activate_meeting(`{{meeting.id}}`)">
+                                          {% if meeting.activated %}
+                                            Deactivate
+                                          {%else%}
+                                            Activate 
+                                          {% endif %}
+                                          form filling
+                                        </a>
+                                      </b>
+                                    </span>
+
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                     </button>
@@ -282,9 +295,6 @@
       const uid = Number( `{{ session.data.id | safe }}` );
     </script>
     {% endblock modals %}
-    <script>
-      const meeting_id = Number(`{{meeting_id | safe}}`);
-    </script>
     <script src="{{url_for('static', filename = 'vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{url_for('static', filename = 'vendor/popper.js/umd/popper.min.js')}}"> </script>
     <script src="{{url_for('static', filename = 'vendor/bootstrap/js/bootstrap.min.js')}}"></script>

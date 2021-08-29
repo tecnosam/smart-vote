@@ -37,7 +37,7 @@
                     <br>
                     <div class="form-group" style="margin-top: 2%; margin-bottom: 2%">
                         <label class="sr-only">Poll Tag</label>
-                        <input name="desc" id="add-poll-desc" type="text" placeholder="Describe the poll" class="mr-3 form-control" required>
+                        <input name="desc" id="add-poll-desc" type="text" placeholder="Describe the poll" class="mr-3 form-control">
                     </div>
                     <br>
                     <div class="form-group">
@@ -62,6 +62,9 @@
 
     </div>
 </section>
+<script>
+  const meeting_id = Number(`{{meeting.id | safe}}`);
+</script>
 
 
 {% endblock content %}
