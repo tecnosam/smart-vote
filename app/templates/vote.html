@@ -67,6 +67,9 @@
         async function submit_form(  ) {
             for ( let poll_el of $(".selected-option") ) {
                 console.log( poll_el.value );
+                if ( poll_el.value == "0" ) {
+                  continue;
+                }
 
                 await $.ajax({
                   url: `/meetings/members/${mid}/vote/${poll_el.value}`,

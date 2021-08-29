@@ -1,5 +1,5 @@
 from flask_restful import Resource, marshal, reqparse, marshal_with
-from flask import abort, Response, request
+from flask import abort, Response, request, session
 
 from ..resources.all_fields import VoteFields
 
@@ -20,7 +20,13 @@ class VoteResource( Resource ):
         # Create a new vote
         # pl = self.c_fields.parse_args( strict = True )
 
-        # TODO: validate the members in session matches mid
+
+        if ( 'member' not in session ):
+            abort(Response("You have to Login with your member cred for the meeting", 403))
+        
+        elif ( session['member']['id'] != mid ):
+            abort(Response( f"You dont have access to vote for { session['member']['name'] }" ))
+
         _vote = Vote.query.filter_by( mid = mid, oid = oid ).first()
 
         if _vote is not None:
