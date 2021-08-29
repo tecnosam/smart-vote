@@ -5,6 +5,14 @@
 {%block title%}Polls{%endblock%}
 {%block page_title%}Polls for {{meeting.tag}}{%endblock%}
 
+{% block more_options %}
+    
+    <li class="nav-item active">
+        <a class="nav-link" href="{{url_for('vote_results_view', meeting_id = meeting.id)}}" target="__blank">View Results</a>
+    </li>
+
+{% endblock more_options %}
+
 {% block content %}
 
 <section class="py-5">
@@ -55,10 +63,5 @@
     </div>
 </section>
 
-<script>
-
-    const meeting_id = Number(`{{meeting.id}}`);
-
-</script>
 
 {% endblock content %}

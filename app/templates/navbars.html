@@ -1,0 +1,28 @@
+
+{% macro meeting_nav_bar( meeting ) %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-align-justify"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav ml-auto" style="text-align: center;">
+                    <!-- Brings out dialogs/modals -->
+                    {% block more_options %}
+                    {% endblock more_options %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for( 'vote_view', meeting_id = meeting.id )}}">Vote</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for( 'vote_results_view', meeting_id = meeting.id )}}">View results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url_for( 'member_logout_view' )}}">logout</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+{% endmacro %}

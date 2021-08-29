@@ -72,22 +72,37 @@ def vote_results_view( meeting_id ):
     if meeting is None:
         abort( 404 )
     
-    if ( session.get("member") is None ):
-        return render_template(
-            "member_login.html", 
-            meeting = meeting,
-            meeting_id = meeting_id
-        )
+    if ( session.get('data', {'id':0})['id'] != meeting.uid ):
 
-    elif ( session['member']['meeting_id'] != meeting_id ):
+        if ( session.get("member") is None ):
+            return render_template(
+                "member_login.html", 
+                meeting = meeting,
+                meeting_id = meeting_id
+            )
 
-        flash("SOmething fishy going on")
+        elif ( session['member']['meeting_id'] != meeting_id ):
 
-        return redirect( url_for("vote_view", meeting_id = meeting_id) )
+            flash("SOmething fishy going on")
+
+            return redirect( url_for("vote_view", meeting_id = meeting_id) )
 
 
     return render_template(
         "meeting_results.html", 
         meeting = meeting, 
         meeting_id = meeting_id
+    )
+
+
+@app.route("/member/logout")
+def member_logout_view():
+
+    _member = session.pop( 'member' )
+
+    return redirect( 
+        url_for( 
+            "vote_view", 
+            meeting_id = _member['meeting_id']
         )
+    )

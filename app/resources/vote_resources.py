@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse, marshal_with
+from flask_restful import Resource, marshal, reqparse, marshal_with
 from flask import abort, Response, request
 
 from ..resources.all_fields import VoteFields
@@ -34,7 +34,8 @@ class VoteResource( Resource ):
 
         try:
             _vote = Vote.add( mid, oid )
-            # TODO: emit 'add-vote' event with vote data (vote in VoteResource.post) to room
+
+            socket.emit( 'add-vote', marshal( _vote, VoteFields ), room = f"meeting-{_vote.id}-room" )
             return _vote
         except Exception as e:
             abort( Response( str(e), 400 ) )
